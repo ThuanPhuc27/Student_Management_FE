@@ -53,6 +53,8 @@ pipeline {
                                     }
                                 }
 
+                                sh 'echo ${env.userChoice}'
+
                                 if (env.userChoice == 'yes') {
                                     echo "Push to ECR started..."
                                     sh 'aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin 418295694191.dkr.ecr.ap-southeast-1.amazonaws.com'
