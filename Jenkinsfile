@@ -47,18 +47,14 @@ pipeline {
                         script {
                             try {
                                 timeout(time: 5, unit: 'MINUTES') {
-                                    // Hiển thị thông báo yêu cầu người dùng quyết định
-                                    env.userChoice = input message: 'Do you want to migrate the database?',
+                                    env.userChoice = input message: 'Do you want to push to ecr',
                                     parameters: [
-                                        choice(name: 'Versioning Service', choices: ['no', 'yes'], description: 'Choose "yes" if you want to migrate!')
+                                        choice(name: 'Versioning Service', choices: ['no', 'yes'], description: 'Choose "yes" if you want to push!')
                                     ]
                                 }
 
                                 if (env.userChoice == 'yes') {
                                     echo "Push to ECR started..."
-                                    // Thực hiện migration qua Docker
-                                    sh 'sudo apt update'
-                                    sh 'sudo apt install awscli -y'
                                     sh 'aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin 418295694191.dkr.ecr.ap-southeast-1.amazonaws.com'
                                     sh 'docker tag ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} ${ECR_REGISTRY}/${ECR_PROJECT}:${DOCKER_IMAGE_TAG}'
                                     sh 'docker push ${ECR_REGISTRY}/${ECR_PROJECT}:${DOCKER_IMAGE_TAG}'
