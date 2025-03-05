@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'build-server' } 
+    agent any 
     environment {
         DOCKER_IMAGE_NAME = "harbor.lptdevops.website/student_managerment/frontend"
         DOCKER_IMAGE_TAG = "latest"
