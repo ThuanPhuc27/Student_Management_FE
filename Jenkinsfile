@@ -47,10 +47,10 @@ pipeline {
                         script {
                             try {
                                 timeout(time: 5, unit: 'MINUTES') {
-                                    env.userChoice = input message: 'Do you want to push to ecr',
-                                    parameters: [
-                                        choice(name: 'Versioning Service', choices: ['no', 'yes'], description: 'Choose "yes" if you want to push!')
-                                    ]
+                                    def userChoice = input message: 'Do you want to push to ECR?', 
+                                          parameters: [
+                                              choice(name: 'Versioning Service', choices: ['no', 'yes'], description: 'Choose "yes" if you want to push!')
+                                          ]
                                 }
 
                                 if (env.userChoice == 'yes') {
