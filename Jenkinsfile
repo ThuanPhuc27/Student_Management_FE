@@ -26,9 +26,14 @@ pipeline {
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'harbor', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                        sh "echo $DOCKER_PASS | docker login ${REGISTRY_URL} -u $DOCKER_USER --password-stdin"
+                        sh """
+                            echo $DOCKER_PASS | docker login ${REGISTRY_URL} -u $DOCKER_USER --password-stdin
+                            """
                     }
-                    sh 'aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 160885258086.dkr.ecr.ap-northeast-2.amazonaws.com'
+                    
+                    sh """
+                    aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 160885258086.dkr.ecr.ap-northeast-2.amazonaws.com 
+                    """
                 }
             }
         }
