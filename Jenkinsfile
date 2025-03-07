@@ -30,10 +30,6 @@ pipeline {
                             echo $DOCKER_PASS | docker login ${REGISTRY_URL} -u $DOCKER_USER --password-stdin
                             """
                     }
-                    
-                    sh """
-                    aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 160885258086.dkr.ecr.ap-northeast-2.amazonaws.com 
-                    """
                 }
             }
         }
@@ -61,6 +57,7 @@ pipeline {
 
                                 if (env.userChoice == 'yes') {
                                     echo "Push to ECR started..."
+                                    sh 'aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 160885258086.dkr.ecr.ap-northeast-2.amazonaws.com'
                                     sh 'docker tag ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} ${ECR_REGISTRY}/${ECR_PROJECT}:${DOCKER_IMAGE_TAG}'
                                     sh 'docker push ${ECR_REGISTRY}/${ECR_PROJECT}:${DOCKER_IMAGE_TAG}'
                                     echo "Push success!"
