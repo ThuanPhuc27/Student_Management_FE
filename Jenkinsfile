@@ -108,6 +108,8 @@ pipeline {
 
                         if (env.userChoice == 'yes') {
                             sh '''
+                                apt update && apt install jq -y
+
                                 TASK_DEFINITION=$(aws ecs describe-task-definition --task-definition ${TASK_FAMILY} --region ${REGION})
 
                                 NEW_TASK_DEFINITION=$(echo $TASK_DEFINITION | jq --arg IMAGE "${ECR_REGISTRY}/${ECR_PROJECT}:${DOCKER_IMAGE_TAG}" '.taskDefinition | .containerDefinitions[0].image = $IMAGE | del(.taskDefinitionArn) | del(.revision) | del(.status) | del(.requiresAttributes) | del(.compatibilities) |  del(.registeredAt)  | del(.registeredBy)')
